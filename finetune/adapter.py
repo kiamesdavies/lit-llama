@@ -196,6 +196,8 @@ def loss_fn(logits, targets):
     # shift the targets such that output n predicts token n+1
     logits = logits[..., :-1, :].contiguous()
     targets = targets[..., 1:].contiguous()
+    //logits.view(-1, logits.size(-1)) comprises the output matrix (b,t, vocab size) to (b*t, vocab size)
+    //targets.view(-1) flattens the target to matrix (b*t) where t is seq length
     loss = torch.nn.functional.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=-1)
     return loss
     
